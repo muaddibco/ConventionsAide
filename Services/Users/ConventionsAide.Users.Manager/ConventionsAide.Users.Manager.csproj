@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+    <None Remove="nlog.Development.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="nlog.Development.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\ConventionsAide.Core.ObjectMapping\Core.ObjectMapping.csproj" />
+    <ProjectReference Include="..\..\..\Core\Core.Communication\Core.Communication.csproj" />
+    <ProjectReference Include="..\..\..\Core\Core.Services\Core.Services.csproj" />
+    <ProjectReference Include="..\ConventionsAide.Users.Contracts\ConventionsAide.Users.Contracts.csproj" />
+    <ProjectReference Include="..\ConventionsAide.Users.Domain\ConventionsAide.Users.Domain.csproj" />
+    <ProjectReference Include="..\ConventionsAide.Users.EntityFrameworkCore\ConventionsAide.Users.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+</Project>

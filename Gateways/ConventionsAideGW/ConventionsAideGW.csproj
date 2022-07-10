@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>554c9310-c712-4566-b19b-be9bded81d45</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.16.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.3.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.Common\Core.Common.csproj" />
+    <ProjectReference Include="..\..\Core\Core.Communication\Core.Communication.csproj" />
+    <ProjectReference Include="..\..\Core\Core.HealthChecks\Core.HealthChecks.csproj" />
+    <ProjectReference Include="..\..\Core\Core.Services\Core.Services.csproj" />
+    <ProjectReference Include="..\..\Services\Users\ConventionsAide.Users.Client\ConventionsAide.Users.Client.csproj" />
+    <ProjectReference Include="..\..\Services\Venues\ConventionsAide.Venues.Client\ConventionsAide.Venues.Client.csproj" />
+    <ProjectReference Include="..\..\Services\Venues\Integrations\OpenBrewery\ConventionsAide.Venues.Integration.OpenBrewery.Client\ConventionsAide.Venues.Integration.OpenBrewery.Client.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,47 @@
+version: '3.4'
+
+services:
+  conventionsaidegw:
+    build:
+      context: .
+      dockerfile: Gateways/ConventionsAideGW/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - 5100:80
+      - 5101:443
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  monitorclient:
+    build:
+      context: .
+      dockerfile: Gateways/MonitorClient/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 5200:80
+      - 5201:443
+
+  venuesmanager:
+    build:
+      context: .
+      dockerfile: Services/Venues/ConventionsAide.Venues.Manager/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  usersmanager:
+    build:
+      context: .
+      dockerfile: Services/Users/ConventionsAide.Users.Manager/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  openbreweryintegration:
+    build:
+      context: .
+      dockerfile: Services/Venues/Integrations/OpenBrewery/ConventionsAide.Venues.Integration.OpenBrewery.Manager/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development

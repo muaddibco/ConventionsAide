@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  rabbitmq:
+    image: masstransit/rabbitmq
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+
+  db:
+    image: postgres:13.7-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: conventionsaide
+      POSTGRES_PASSWORD: P@ssword1
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5434:5432"
+
+  monitorclient:
+    image: ${DOCKER_REGISTRY-}monitorclient
+    ports:
+      - "80"
+    
+  conventionsaidegw:
+    image: ${DOCKER_REGISTRY-}conventionsaidegw
+    ports:
+      - "80"
+  
+  venuesmanager:
+    image: ${DOCKER_REGISTRY-}venuesmanager
+    ports:
+      - "80"
+  
+  usersmanager:
+    image: ${DOCKER_REGISTRY-}usersmanager
+    ports:
+      - "80"
+
+  openbreweryintegration:
+    image: ${DOCKER_REGISTRY-}openbreweryintegration
+    ports:
+      - "80"

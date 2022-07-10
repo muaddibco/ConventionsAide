@@ -1,0 +1,18 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information"
+    }
+  },
+  "AzureKeyVault": {
+    "Endpoint": "https://consvaultstg.vault.azure.net/",
+    "ClientId": "79b54d4c-016a-41d7-8153-65ff693a918c",
+    "ClientSecret": "f1b7Q~47YfTawqdM0wmUgZ6jvMPHwoOfISJza"
+  },
+  "Communication": {
+    "Host": "rabbitmq",
+    "VirtualHost": "/",
+    "Username": "guest",
+    "Password": "guest"
+  }
+}
