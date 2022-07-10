@@ -15,8 +15,7 @@ namespace ConventionsAide.Core.Authentication
 
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
         {
-            return await _authenticationProducer
-                .ProduceConsumerPrincipalAsync(principal);
+            return await Task.FromResult(_authenticationProducer.ProduceConsumerPrincipal(principal));
         }
     }
 }

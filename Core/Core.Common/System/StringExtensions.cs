@@ -39,7 +39,7 @@ namespace System
         //
         // Summary:
         //     Indicates whether this string is null or an System.String.Empty string.
-        public static bool IsNullOrEmpty(this string str)
+        public static bool IsNullOrEmpty(this string? str)
         {
             return string.IsNullOrEmpty(str);
         }

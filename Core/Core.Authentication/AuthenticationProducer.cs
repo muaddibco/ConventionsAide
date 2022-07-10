@@ -21,18 +21,25 @@ namespace ConventionsAide.Core.Authentication
                 .Get<AuthOptions>();
         }
 
-        public byte[] Serialize(ConsumerPrincipal principal)
+        public byte[] Serialize(ClaimsPrincipal principal)
         {
             using MemoryStream memoryStream = new ();
             using BinaryWriter binaryWriter = new (memoryStream);
 
-            principal.Principal.WriteTo(binaryWriter);
+            if(principal is ConsumerPrincipal consumerPrincipal)
+            {
+                consumerPrincipal.Principal.WriteTo(binaryWriter);
+            }
+            else
+            {
+                principal.WriteTo(binaryWriter);
+            }
 
             return memoryStream
                 .ToArray();
         }
 
-        public async Task<ConsumerPrincipal> Deserialize(byte[] source)
+        public ConsumerPrincipal Deserialize(byte[] source)
         {
             if (source == null)
             {
@@ -44,10 +51,10 @@ namespace ConventionsAide.Core.Authentication
 
             var principal = new ClaimsPrincipal(binaryReader);
 
-            return await ProduceConsumerPrincipalAsync(principal);
+            return ProduceConsumerPrincipal(principal);
         }
 
-        public async Task<ConsumerPrincipal> ProduceConsumerPrincipalAsync(ClaimsPrincipal principal)
+        public ConsumerPrincipal ProduceConsumerPrincipal(ClaimsPrincipal principal)
         {
             string[] userRoles = HandleRoleClaims(principal);
 
@@ -66,7 +73,7 @@ namespace ConventionsAide.Core.Authentication
             return consumerPrincipal;
         }
 
-        private string[] HandleRoleClaims(ClaimsPrincipal principal)
+        private static string[] HandleRoleClaims(ClaimsPrincipal principal)
         {
             string[] userRoles = principal
                .FindAll(ClaimTypes.Role)

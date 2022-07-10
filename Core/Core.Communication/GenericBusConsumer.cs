@@ -11,23 +11,25 @@ namespace ConventionsAide.Core.Communication
     {
         private readonly IBusConsumersProvider _busConsumersProvider;
         private readonly IAuthenticationProducer _authenticationProducer;
+        private readonly IAuthenticationContext _authenticationContext;
 
         public GenericBusConsumer(
             IBusConsumersProvider busConsumersProvider,
-            IAuthenticationProducer authenticationProducer)
+            IAuthenticationProducer authenticationProducer,
+            IAuthenticationContext authenticationContext)
         {
             _busConsumersProvider = busConsumersProvider;
             _authenticationProducer = authenticationProducer;
+            _authenticationContext = authenticationContext;
         }
 
         public async Task Consume(ConsumeContext<CommandMessage<TRequest>> context)
         {
-            byte[] arr = context.Headers.Get<byte[]>("authorization");
+            _authenticationContext.SetUserFromHeader(context.Headers.Get<byte[]>(CommunicationService.AuthorizationHeaderName));
 
-            var consumerPrincipal = await _authenticationProducer.Deserialize(arr);
+            string apiToken = context.Headers.Get<string>(CommunicationService.AuthorizationApiHeaderName);
 
-            var response = await _busConsumersProvider
-                .InvokeHandler<TRequest,TResponse>(context.Message, consumerPrincipal);
+            var response = await _busConsumersProvider.InvokeHandler<TRequest,TResponse>(context.Message);
 
             await context.RespondAsync(response);
         }
@@ -37,23 +39,23 @@ namespace ConventionsAide.Core.Communication
     {
         private readonly IBusConsumersProvider _busConsumersProvider;
         private readonly IAuthenticationProducer _authenticationProducer;
+        private readonly IAuthenticationContext _authenticationContext;
 
         public GenericBusConsumer(
             IBusConsumersProvider busConsumersProvider,
-            IAuthenticationProducer authenticationProducer)
+            IAuthenticationProducer authenticationProducer,
+            IAuthenticationContext authenticationContext)
         {
             _busConsumersProvider = busConsumersProvider;
             _authenticationProducer = authenticationProducer;
+            _authenticationContext = authenticationContext;
         }
 
         public async Task Consume(ConsumeContext<TCommand> context)
         {
-            byte[] arr = context.Headers.Get<byte[]>("authorization");
+            _authenticationContext.SetUserFromHeader(context.Headers.Get<byte[]>("authorization"));
 
-            var consumerPrincipal = await _authenticationProducer.Deserialize(arr);
-
-            await _busConsumersProvider
-                .InvokeCommandHandler(context.Message, consumerPrincipal);
+            await _busConsumersProvider.InvokeCommandHandler(context.Message);
         }
     }
 

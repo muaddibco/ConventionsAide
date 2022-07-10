@@ -8,11 +8,11 @@ namespace ConventionsAide.Core.Communication
     [ServiceContract]
     public interface ICommunicationService
     {
-        Task Publish<T>(Func<T> creationFunc) where T : class;
+        Task Publish<T>(Func<T> creationFunc, string? apiName = null) where T : class;
 
-        Task Publish<T>(T command, int? delayInSeconds = null) where T : class;
+        Task Publish<T>(T command, int? delayInSeconds = null, string? apiName = null) where T : class;
 
-        Task<TResponse> SendRequest<TRequest, TResponse>(TRequest payload, TimeSpan requestTimeout = default)
+        Task<TResponse> SendRequest<TRequest, TResponse>(TRequest payload, string? apiName = null, TimeSpan requestTimeout = default)
             where TRequest : class
             where TResponse : class;
 

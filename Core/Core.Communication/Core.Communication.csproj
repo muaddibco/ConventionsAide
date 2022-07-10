@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>ConventionsAide.Core.Communication</AssemblyName>
     <RootNamespace>ConventionsAide.Core.Communication</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

@@ -14,18 +14,18 @@ namespace ConventionsAide.Core.Communication
     {
         private readonly IEnumerable<IApiHandler> _apiHandlers;
         private readonly IEnumerable<ICommandHandler> _commandHandlers;
-        private readonly IAuthenticationContext _authenticatedContext;
+        private readonly IAuthenticationContext _authenticationContext;
         private readonly ILogger<BusConsumersProvider> _logger;
 
         public BusConsumersProvider(
             IEnumerable<IApiHandler> apiHandlers,
             IEnumerable<ICommandHandler> commandHandlers,
-            IAuthenticationContext authenticatedContext,
+            IAuthenticationContext authenticationContext,
             ILogger<BusConsumersProvider> logger)
         {
             _apiHandlers = apiHandlers;
             _commandHandlers = commandHandlers;
-            _authenticatedContext = authenticatedContext;
+            _authenticationContext = authenticationContext;
             _logger = logger;
         }
 
@@ -38,14 +38,13 @@ namespace ConventionsAide.Core.Communication
             }
 
             _logger.LogDebug($"Invoking {handler.GetType().FullName} to handle batch of messages of type {typeof(TRequest).FullName}...");
+            ValidateAudienceAndScope(handler);
             await handler.HandleAsync(request);
         }
 
-        public async Task InvokeCommandHandler<TCommand>(TCommand command, ConsumerPrincipal consumerPrincipal)
+        public async Task InvokeCommandHandler<TCommand>(TCommand command)
             where TCommand : class
         {
-            _authenticatedContext.User = consumerPrincipal;
-
             var broadcastHandler = _commandHandlers
                 .Select(h => h as IBroadcastHandler<TCommand>)
                 .FirstOrDefault(h => h is not null);
@@ -64,6 +63,7 @@ namespace ConventionsAide.Core.Communication
             if (commandHandler != null)
             {
                 _logger.LogDebug($"Invoking {commandHandler.GetType().FullName} to handle command message of type {typeof(TCommand).FullName}...");
+                ValidateAudienceAndScope(commandHandler);
                 await commandHandler.HandleAsync(command);
                 return;
             }
@@ -71,24 +71,33 @@ namespace ConventionsAide.Core.Communication
             throw new NotImplementedException($"Consumer for the message type {typeof(TCommand).FullName} is not implemented");
         }
 
-        async Task<CommandResponse<TRequest, TResponse>> IBusConsumersProvider.InvokeHandler<TRequest, TResponse>(
-            CommandMessage<TRequest> request,
-            ConsumerPrincipal consumerPrincipal)
+        async Task<CommandResponse<TRequest, TResponse>> IBusConsumersProvider.InvokeHandler<TRequest, TResponse>(CommandMessage<TRequest> request)
         {
             if (_apiHandlers.FirstOrDefault(h => h is IApiHandler<TRequest, TResponse>) is not IApiHandler<TRequest, TResponse> handler)
             {
                 throw new NotImplementedException($"Consumer for the message type {typeof(TRequest).FullName} is not implemented");
             }
 
-            _authenticatedContext.User = consumerPrincipal;
-
             _logger.LogDebug($"Invoking {handler.GetType().FullName} to handle request message of type {typeof(TRequest).FullName} and return response of type {typeof(TResponse).FullName}>...");
+            ValidateAudienceAndScope(handler);
             var response = await handler.HandleAsync(request, default);
 
             return new CommandResponse<TRequest, TResponse>(
                 request.CorrelationId,
                 request.Payload,
                 response);
+        }
+
+        private void ValidateAudienceAndScope(object handler)
+        {
+            var audienceAttrs = handler.GetType().GetCustomAttributes(typeof(AuthorizationAudienceAttribute), true);
+            if(audienceAttrs.Any())
+            {
+                var audienceAttr = audienceAttrs.First() as AuthorizationAudienceAttribute;
+                var scopeAttr = handler.GetType().GetCustomAttributes(typeof(AuthorizationScopeAttribute), false)?.FirstOrDefault() as AuthorizationScopeAttribute;
+
+                _authenticationContext.ValidateApiToken(audienceAttr?.Audience, scopeAttr?.Scope);
+            }
         }
     }
 }

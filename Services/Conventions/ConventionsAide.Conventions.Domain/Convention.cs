@@ -10,5 +10,7 @@ namespace ConventionsAide.Conventions.Domain
         public IEnumerable<long>? TopicIds { get; set; }
         public long GuestsInvitationId { get; set; }
         public long TalkersInvitationId { get; set; }
+        public DateOnly From { get; set; }
+        public DateOnly To { get; set; }
     }
 }

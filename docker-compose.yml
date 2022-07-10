@@ -27,6 +27,11 @@ services:
     image: ${DOCKER_REGISTRY-}conventionsaidegw
     ports:
       - "80"
+    
+  usersaidegw:
+    image: ${DOCKER_REGISTRY-}usersaidegw
+    ports:
+      - "80"
   
   venuesmanager:
     image: ${DOCKER_REGISTRY-}venuesmanager

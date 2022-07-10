@@ -7,10 +7,10 @@ namespace ConventionsAide.Core.Authentication
     [ServiceContract]
     public interface IAuthenticationProducer
     {
-        Task<ConsumerPrincipal> ProduceConsumerPrincipalAsync(ClaimsPrincipal principal);
+        ConsumerPrincipal ProduceConsumerPrincipal(ClaimsPrincipal principal);
 
-        byte[] Serialize(ConsumerPrincipal principal);
+        byte[] Serialize(ClaimsPrincipal principal);
 
-        Task<ConsumerPrincipal> Deserialize(byte[] source);
+        ConsumerPrincipal Deserialize(byte[] source);
     }
 }

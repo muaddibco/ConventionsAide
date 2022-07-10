@@ -1,4 +1,5 @@
 ﻿using ConventionsAide.Core.Common.Architecture;
+using System.Threading.Tasks;
 
 namespace ConventionsAide.Core.Authentication
 {
@@ -11,6 +12,14 @@ namespace ConventionsAide.Core.Authentication
         /// <summary>
         /// Gets or sets the user identity.
         /// </summary>
-        ConsumerPrincipal User { get; set; }
+        ConsumerPrincipal User { get; }
+
+        void SetUserFromHeader(byte[] content);
+
+        Task<string> FetchApiToken(string apiName);
+
+        void StoreApiToken(string apiToken);
+
+        void ValidateApiToken(string audience, string scope);
     }
 }

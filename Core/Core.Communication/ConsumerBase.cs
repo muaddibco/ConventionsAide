@@ -24,7 +24,7 @@ namespace ConventionsAide.Core.Communication
 
         protected async Task ConsumeInner<TRequest, TResponse>(ConsumeContext<CommandMessage<TRequest>> context) where TRequest : class where TResponse : class
         {
-            var response = await ServiceProvider.GetService<IBusConsumersProvider>().InvokeHandler<TRequest, TResponse>(context.Message, null).ConfigureAwait(false);
+            var response = await ServiceProvider.GetService<IBusConsumersProvider>().InvokeHandler<TRequest, TResponse>(context.Message).ConfigureAwait(false);
             await context.RespondAsync(response).ConfigureAwait(false);
         }
 
