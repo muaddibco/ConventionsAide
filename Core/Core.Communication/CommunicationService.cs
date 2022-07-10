@@ -82,7 +82,7 @@ namespace ConventionsAide.Core.Communication
                 .CreateRequestClient<CommandMessage<TRequest>>(requestTimeout != default && requestTimeout.TotalSeconds > 0 ? RequestTimeout.After(s: (int)requestTimeout.TotalSeconds) : default)
                 .Create(new CommandMessage<TRequest>(Guid.NewGuid(), payload));
 
-            request.UseExecute(async x =>
+            request.UseExecuteAsync(async x =>
             {
                 SetAuthorizationHeader(x.Headers);
 

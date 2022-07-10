@@ -26,8 +26,10 @@ namespace ConventionsAide.Core.Communication
         public async Task Consume(ConsumeContext<CommandMessage<TRequest>> context)
         {
             _authenticationContext.SetUserFromHeader(context.Headers.Get<byte[]>(CommunicationService.AuthorizationHeaderName));
-
             string apiToken = context.Headers.Get<string>(CommunicationService.AuthorizationApiHeaderName);
+
+            _authenticationContext.StoreApiToken(apiToken);
+
 
             var response = await _busConsumersProvider.InvokeHandler<TRequest,TResponse>(context.Message);
 
@@ -53,7 +55,10 @@ namespace ConventionsAide.Core.Communication
 
         public async Task Consume(ConsumeContext<TCommand> context)
         {
-            _authenticationContext.SetUserFromHeader(context.Headers.Get<byte[]>("authorization"));
+            _authenticationContext.SetUserFromHeader(context.Headers.Get<byte[]>(CommunicationService.AuthorizationHeaderName));
+            string apiToken = context.Headers.Get<string>(CommunicationService.AuthorizationApiHeaderName);
+
+            _authenticationContext.StoreApiToken(apiToken);
 
             await _busConsumersProvider.InvokeCommandHandler(context.Message);
         }

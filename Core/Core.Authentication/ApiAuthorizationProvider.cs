@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Flurl.Http;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace ConventionsAide.Core.Authentication
 {
@@ -21,9 +23,9 @@ namespace ConventionsAide.Core.Authentication
 
         public async Task<string> ObtainTokenAsync(string apiName)
         {
-            string tokenUrl = _configuration[$"Auth{apiName}Api:TokenUrl"];
-            string clientId = _configuration[$"Secrets:Auth{apiName}Api:ClientId"];
-            string clientSecret = _configuration[$"Secrets:Auth{apiName}Api:ClientSecret"];
+            string tokenUrl = _configuration["AuthApi:TokenUrl"];
+            string clientId = _configuration["Secrets:AuthApi:ClientId"];
+            string clientSecret = _configuration["Secrets:AuthApi:ClientSecret"];
 
             if(tokenUrl.IsNullOrEmpty())
             {
@@ -44,13 +46,14 @@ namespace ConventionsAide.Core.Authentication
                     {
                         ClientId = clientId,
                         ClientSecret = clientSecret,
-                        Audience = $"https://{apiName}/"
+                        Audience = $"https://{apiName}Api/"
                     })
                 .ReceiveJson<AuthorizationResponse>();
 
             return response.AccessToken;
         }
 
+        [JsonObject(NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
         internal class AuthorizationRequestBody
         {
             private const string _defaultGrantType = "client_credentials";
@@ -61,6 +64,7 @@ namespace ConventionsAide.Core.Authentication
             public string GrantType { get; set; } = _defaultGrantType;
         }
 
+        [JsonObject(NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
         internal class AuthorizationResponse
         {
             public string AccessToken { get; set; }

@@ -20,6 +20,6 @@ namespace ConventionsAide.Core.Authentication
 
         void StoreApiToken(string apiToken);
 
-        void ValidateApiToken(string audience, string scope);
+        Task ValidateApiToken(string audience, string scope);
     }
 }

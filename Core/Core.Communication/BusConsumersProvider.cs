@@ -90,13 +90,18 @@ namespace ConventionsAide.Core.Communication
 
         private void ValidateAudienceAndScope(object handler)
         {
-            var audienceAttrs = handler.GetType().GetCustomAttributes(typeof(AuthorizationAudienceAttribute), true);
-            if(audienceAttrs.Any())
+            var audienceAttrs = handler.GetType().GetCustomAttributesData().Where(a => a.AttributeType == typeof(AuthorizationAudienceAttribute));
+            if(!audienceAttrs.Any())
             {
-                var audienceAttr = audienceAttrs.First() as AuthorizationAudienceAttribute;
+                audienceAttrs = handler.GetType().Assembly.CustomAttributes.Where(a => a.AttributeType == typeof(AuthorizationAudienceAttribute))?.ToArray();
+            }
+
+            if (audienceAttrs?.Any() ?? false)
+            {
+                var audienceAttrData = audienceAttrs.First();
                 var scopeAttr = handler.GetType().GetCustomAttributes(typeof(AuthorizationScopeAttribute), false)?.FirstOrDefault() as AuthorizationScopeAttribute;
 
-                _authenticationContext.ValidateApiToken(audienceAttr?.Audience, scopeAttr?.Scope);
+                _authenticationContext.ValidateApiToken(audienceAttrData?.ConstructorArguments[0].Value?.ToString(), scopeAttr?.Scope);
             }
         }
     }

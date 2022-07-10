@@ -1,9 +1,17 @@
 ﻿using ConventionsAide.Core.Common.Architecture;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PostSharp.Patterns.Contracts;
 using System;
 using System.Collections.Concurrent;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ConventionsAide.Core.Authentication
@@ -17,12 +25,14 @@ namespace ConventionsAide.Core.Authentication
         private readonly ConcurrentDictionary<string, JwtSecurityToken> _apiTokens = new();
         private readonly IApiAuthorizationProvider _apiAuthorizationProvider;
         private readonly IAuthenticationProducer _authenticationProducer;
+        private readonly IConfiguration _configuration;
         private string _apiToken;
 
-        public AuthenticationContext(IApiAuthorizationProvider apiAuthorizationProvider, IAuthenticationProducer authenticationProducer)
+        public AuthenticationContext(IApiAuthorizationProvider apiAuthorizationProvider, IAuthenticationProducer authenticationProducer, IConfiguration configuration)
         {
             _apiAuthorizationProvider = apiAuthorizationProvider;
             _authenticationProducer = authenticationProducer;
+            _configuration = configuration;
         }
 
         /// <inheritdoc />
@@ -55,16 +65,45 @@ namespace ConventionsAide.Core.Authentication
             _apiToken = apiToken;
         }
 
-        public void ValidateApiToken(string audience, string scope)
+        public async Task ValidateApiToken(string audience, string scope)
         {
+            SecurityToken validatedToken = await ValidateAudience(audience);
+
+            ValidateScope(scope, validatedToken);
+        }
+
+        private async Task<SecurityToken> ValidateAudience(string audience)
+        {
+            string issuer = _configuration["AuthApi:Issuer"];
+
+            IConfigurationManager<OpenIdConnectConfiguration> configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>($"{issuer}.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever());
+            OpenIdConnectConfiguration openIdConfig = await configurationManager.GetConfigurationAsync(CancellationToken.None);
+
             var tokenHandler = new JwtSecurityTokenHandler();
             tokenHandler.ValidateToken(_apiToken, new TokenValidationParameters
             {
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidAudience = audience
+                ValidIssuer = issuer,
+                ValidAudience = $"https://{audience}Api/",
+                IssuerSigningKeys = openIdConfig.SigningKeys
             }, out SecurityToken validatedToken);
+            return validatedToken;
+        }
 
-            var jwtToken = validatedToken as JwtSecurityToken;
+        private static void ValidateScope(string scope, SecurityToken validatedToken)
+        {
+            if (!scope.IsNullOrEmpty())
+            {
+                var jwtToken = validatedToken as JwtSecurityToken;
+                var permissionsValue = jwtToken.Payload["permissions"]?.ToString();
+                var permissions = JsonConvert.DeserializeObject<string[]>(permissionsValue);
+                if (!permissions.Contains(scope))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
         }
 
         private async Task<JwtSecurityToken> ObtainAndCacheToken(string apiName)
