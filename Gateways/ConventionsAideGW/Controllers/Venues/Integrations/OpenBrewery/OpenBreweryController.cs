@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ConventionsAide.Venues.Integration.OpenBrewery.Client;
 using ConventionsAide.Venues.Integration.OpenBrewery.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConventionsAideGW.Controllers.Venues.Integrations.OpenBrewery
 {
@@ -17,6 +18,7 @@ namespace ConventionsAideGW.Controllers.Venues.Integrations.OpenBrewery
         }
 
         [HttpPost]
+        [Authorize(Policy = "SyncVenues")]
         public async Task<IActionResult> Sync(CancellationToken cancellationToken)
         {
             var response = await  _communicationService.SyncBrewerysAsync(new SyncBrewerysRequestDto());

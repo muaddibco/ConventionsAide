@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Core.Domain\Core.Domain.csproj" />
+    <ProjectReference Include="..\ConventionsAide.Users.Domain.Shared\ConventionsAide.Users.Domain.Shared.csproj" />
   </ItemGroup>
 
 </Project>

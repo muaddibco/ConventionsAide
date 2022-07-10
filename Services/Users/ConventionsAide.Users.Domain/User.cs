@@ -1,4 +1,5 @@
 ﻿using ConventionsAide.Core.Domain.Entities;
+using ConventionsAide.Users.Domain.Shared;
 
 namespace ConventionsAide.Users.Domain
 {

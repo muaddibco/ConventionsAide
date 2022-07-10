@@ -30,7 +30,13 @@
     <ProjectReference Include="..\..\Core\Core.Communication\Core.Communication.csproj" />
     <ProjectReference Include="..\..\Core\Core.HealthChecks\Core.HealthChecks.csproj" />
     <ProjectReference Include="..\..\Core\Core.Services\Core.Services.csproj" />
+    <ProjectReference Include="..\..\Services\Conventions\ConventionsAide.Conventions.Client\ConventionsAide.Conventions.Client.csproj" />
+    <ProjectReference Include="..\..\Services\Registrations\ConventionsAide.Registrations.Client\ConventionsAide.Registrations.Client.csproj" />
+    <ProjectReference Include="..\..\Services\Registrations\ConventionsAide.Registrations.Contracts\ConventionsAide.Registrations.Contracts.csproj" />
+    <ProjectReference Include="..\..\Services\Registrations\ConventionsAide.Registrations.Domain.Shared\ConventionsAide.Registrations.Domain.Shared.csproj" />
     <ProjectReference Include="..\..\Services\Users\ConventionsAide.Users.Client\ConventionsAide.Users.Client.csproj" />
+    <ProjectReference Include="..\..\Services\Users\ConventionsAide.Users.Domain.Shared\ConventionsAide.Users.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\Services\VenueOrders\ConventionsAide.VenueOrders.Client\ConventionsAide.VenueOrders.Client.csproj" />
     <ProjectReference Include="..\..\Services\Venues\ConventionsAide.Venues.Client\ConventionsAide.Venues.Client.csproj" />
     <ProjectReference Include="..\..\Services\Venues\Integrations\OpenBrewery\ConventionsAide.Venues.Integration.OpenBrewery.Client\ConventionsAide.Venues.Integration.OpenBrewery.Client.csproj" />
   </ItemGroup>

@@ -14,4 +14,9 @@
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Core.Contracts\Core.Contracts.csproj" />
+    <ProjectReference Include="..\ConventionsAide.Users.Domain.Shared\ConventionsAide.Users.Domain.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

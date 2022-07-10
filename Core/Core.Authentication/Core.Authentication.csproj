@@ -24,4 +24,10 @@
     <ProjectReference Include="..\Core.Logging\Core.Logging.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Policies\Default\" />
+    <Folder Include="Policies\MemberRegistration\" />
+    <Folder Include="Validators\" />
+  </ItemGroup>
+
 </Project>

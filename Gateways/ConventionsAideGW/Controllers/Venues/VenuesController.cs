@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ConventionsAide.Venues.Client;
 using ConventionsAide.Venues.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConventionsAideGW.Controllers.Venues
 {
@@ -17,6 +18,7 @@ namespace ConventionsAideGW.Controllers.Venues
         }
 
         [HttpGet]
+        [Authorize(Policy = "ReadVenues")]
         public async Task<IActionResult> GetVenues([FromQuery] GetVenuesListRequestDto request, CancellationToken cancellationToken = default)
         {
             var response = await _communicationService.GetVenuesList(request);

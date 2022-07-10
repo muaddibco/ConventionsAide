@@ -1,4 +1,5 @@
 ﻿using ConventionsAide.Core.Domain.Entities;
+using ConventionsAide.VenueOrders.Domain.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace ConventionsAide.VenueOrders.Domain
 {
     public class VenueOrder : Entity<long>
     {
-        public VenueConventionOrder VenueConventionOrder { get; set; }
-        public long VenueConventionOrderId { get; set; }
+        public VenuesConfirmationFlow VenuesConfirmationFlow { get; set; }
+        public long VenuesConfirmationFlowId { get; set; }
         public long VenueId { get; set; }
-
+        public VenueOrderStatus Status { get; set; }
     }
 }

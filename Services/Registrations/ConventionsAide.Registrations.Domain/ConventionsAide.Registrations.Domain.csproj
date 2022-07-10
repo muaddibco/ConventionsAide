@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Core.Domain\Core.Domain.csproj" />
+    <ProjectReference Include="..\..\Users\ConventionsAide.Users.Domain.Shared\ConventionsAide.Users.Domain.Shared.csproj" />
+    <ProjectReference Include="..\ConventionsAide.Registrations.Domain.Shared\ConventionsAide.Registrations.Domain.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

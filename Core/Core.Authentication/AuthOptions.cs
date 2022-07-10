@@ -8,6 +8,5 @@
         public string Authority { get; set; }
         public string Audience { get; set; }
         public string UsernameClaimType { get; set; }
-        public string SiteIdClaimType { get; set; }
     }
 }

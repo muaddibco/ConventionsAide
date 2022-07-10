@@ -1,8 +1,4 @@
 ﻿using ConventionsAide.Core.Authentication.Constants;
-using ConventionsAide.Core.Authentication.Policies.Default;
-using ConventionsAide.Core.Authentication.Policies.MemberRegistration;
-using ConventionsAide.Core.Authentication.Validators;
-using ConventionsAide.Core.Authentication.Validators.Abstractions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -23,34 +19,27 @@ namespace ConventionsAide.Core.Authentication
 
             var isM2M = authOptions.IsM2M.HasValue && authOptions.IsM2M.Value;
 
-            if (string.IsNullOrEmpty(authOptions.UsernameClaimType) && !isM2M)
-            {
-                throw new ArgumentNullException(
-                    paramName: nameof(authOptions.UsernameClaimType),
-                    message: $"Mandatory configuration parameter {nameof(authOptions.UsernameClaimType)} is missing");
-            }
-
-            if (string.IsNullOrEmpty(authOptions.SiteIdClaimType) && !isM2M)
-            {
-                throw new ArgumentNullException(
-                    paramName: nameof(authOptions.SiteIdClaimType),
-                    message: $"Mandatory configuration parameter {nameof(authOptions.SiteIdClaimType)} is missing");
-            }
+            //if (string.IsNullOrEmpty(authOptions.UsernameClaimType) && !isM2M)
+            //{
+            //    throw new ArgumentNullException(
+            //        paramName: nameof(authOptions.UsernameClaimType),
+            //        message: $"Mandatory configuration parameter {nameof(authOptions.UsernameClaimType)} is missing");
+            //}
 
             services
                 .AddHttpContextAccessor()
-                .AddScoped<IClaimsTransformation, ConsumerPrincipalClaimsTransformation>()
-                .AddValidators()
-                .AddAuthorizationHandlers()
+                //.AddScoped<IClaimsTransformation, ConsumerPrincipalClaimsTransformation>()
+                //.AddValidators()
+                //.AddAuthorizationHandlers()
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = authOptions.Authority;// "https://dev-67923645.okta.com/oauth2/default";
+                    options.Authority = authOptions.Authority;
                     options.TokenValidationParameters.ValidAudience = authOptions.Audience;
-                    if (!isM2M)
-                    {
-                        options.TokenValidationParameters.NameClaimType = authOptions.UsernameClaimType;
-                    }
+                    //if (!isM2M)
+                    //{
+                    //    options.TokenValidationParameters.NameClaimType = authOptions.UsernameClaimType;
+                    //}
                     options.Events = new JwtBearerEvents
                     {
                         OnAuthenticationFailed = async c =>
@@ -68,36 +57,30 @@ namespace ConventionsAide.Core.Authentication
                     };
                 });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddMemberRegistrationPolicy();
+            //services.AddAuthorization(options =>
+            //{
+            //    //options.AddMemberRegistrationPolicy();
 
-                options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
-                .RequireAuthenticatedUser()
-                .AddRequirements(new MandatoryClaimsRequirement())
-                .Build();
-            });
+            //    options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+            //    .RequireAuthenticatedUser()
+            //    .Build();
+            //});
         }
 
         private static IServiceCollection AddValidators(this IServiceCollection services)
         {
-            return services
-                .AddSingleton<IMemberIdClaimValidator, MemberIdClaimValidator>()
-                .AddSingleton<ISiteIdClaimValidator, SiteIdClaimValidator>();
+            return services;
         }
 
         private static IServiceCollection AddAuthorizationHandlers(this IServiceCollection services)
         {
-            return services
-                .AddSingleton<IAuthorizationHandler, MandatoryClaimsAuthorizationHandler>()
-                .AddSingleton<IAuthorizationHandler, MemberRegistrationAuthorizationHandler>();
+            return services;
         }
 
         private static void AddMemberRegistrationPolicy(this AuthorizationOptions options)
         {
             var policy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
-                .AddRequirements(new MemberRegistrationClaimsRequirement())
                 .Build();
 
             options.AddPolicy(AuthorizationPolicyNames.MemberRegistrationPolicy, policy);
