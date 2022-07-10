@@ -12,5 +12,7 @@ namespace ConventionsAide.Conventions.Domain
         public long? TalksConfirmationFlowId { get; set; }
         public DateOnly From { get; set; }
         public DateOnly To { get; set; }
+
+        public List<ConventionTalk> Talks { get; set; }
     }
 }

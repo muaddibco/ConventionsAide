@@ -16,5 +16,6 @@ namespace ConventionsAide.Conventions.Contracts
         public long? TalkersInvitationFlowId { get; set; }
         public DateOnly From { get; set; }
         public DateOnly To { get; set; }
+        public List<CreateConventionTalkRequestDto> Talks { get; set; }
     }
 }

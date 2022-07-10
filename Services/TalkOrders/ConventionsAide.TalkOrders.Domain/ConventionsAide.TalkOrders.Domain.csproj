@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Core.Domain\Core.Domain.csproj" />
+    <ProjectReference Include="..\ConventionsAide.TalkOrders.Domain.Shared\ConventionsAide.TalkOrders.Domain.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

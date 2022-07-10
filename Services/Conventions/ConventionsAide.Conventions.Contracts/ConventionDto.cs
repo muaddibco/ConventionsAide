@@ -11,5 +11,6 @@
         public long? TalkersInvitationFlowId { get; set; }
         public DateOnly From { get; set; }
         public DateOnly To { get; set; }
+        public List<ConventionTalkDto> Talks { get; set; }
     }
 }

@@ -41,4 +41,8 @@
     <ProjectReference Include="..\..\Services\Venues\Integrations\OpenBrewery\ConventionsAide.Venues.Integration.OpenBrewery.Client\ConventionsAide.Venues.Integration.OpenBrewery.Client.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\TalkOrders\" />
+  </ItemGroup>
+
 </Project>

@@ -57,5 +57,26 @@ namespace ConventionsAideGW.Controllers.Conventions
         {
             return Ok();
         }
+
+        [HttpPost("{conventionId}")]
+        [Authorize(Policy = "UpdateConventions")]
+        public async Task<IActionResult> CreateConventionTalk([FromRoute] long conventionId, [FromBody] CreateConventionTalkRequestDto request)
+        {
+            return Ok();
+        }
+
+        [HttpPut("{conventionId}/Talks/{talkId}")]
+        [Authorize(Policy = "UpdateConventions")]
+        public async Task<IActionResult> UpdateConventionTalk([FromRoute] long conventionId, [FromRoute] long talkId, [FromBody] UpdateConventionTalkWebRequestDto request)
+        {
+            return Ok();
+        }
+
+        [HttpDelete("{conventionId}/Talks/{talkId}")]
+        [Authorize(Policy = "UpdateConventions")]
+        public async Task<IActionResult> DeleteConventionTalk([FromRoute] long conventionId, [FromRoute] long talkId)
+        {
+            return Ok();
+        }
     }
 }

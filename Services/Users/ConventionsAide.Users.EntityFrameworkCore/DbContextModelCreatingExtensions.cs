@@ -1,4 +1,5 @@
 ﻿using ConventionsAide.Users.Domain;
+using ConventionsAide.Users.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
