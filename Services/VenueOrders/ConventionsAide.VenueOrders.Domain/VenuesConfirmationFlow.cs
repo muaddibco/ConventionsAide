@@ -8,5 +8,6 @@ namespace ConventionsAide.VenueOrders.Domain
         public long ConventionId { get; set; }
 
         public VenuesConfirmationFlowStatus Status { get; set; }
+        public virtual ICollection<VenueOrder> VenueOrders { get; set; }
     }
 }
