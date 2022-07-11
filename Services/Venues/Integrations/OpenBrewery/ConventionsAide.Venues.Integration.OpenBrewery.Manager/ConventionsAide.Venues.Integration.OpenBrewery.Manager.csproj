@@ -39,6 +39,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Core\ConventionsAide.Core.ObjectMapping\Core.ObjectMapping.csproj" />
     <ProjectReference Include="..\..\..\..\..\Core\Core.Communication\Core.Communication.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Core\Core.HealthChecks\Core.HealthChecks.csproj" />
     <ProjectReference Include="..\..\..\..\..\Core\Core.Services\Core.Services.csproj" />
     <ProjectReference Include="..\..\..\ConventionsAide.Venues.Client\ConventionsAide.Venues.Client.csproj" />
     <ProjectReference Include="..\ConventionsAide.Venues.Integration.OpenBrewery.Contracts\ConventionsAide.Venues.Integration.OpenBrewery.Contracts.csproj" />

@@ -33,13 +33,33 @@ services:
     ports:
       - "80"
   
+  conventionsmanager:
+    image: ${DOCKER_REGISTRY-}conventionsmanager
+    ports:
+      - "80"
+  
   venuesmanager:
     image: ${DOCKER_REGISTRY-}venuesmanager
     ports:
       - "80"
   
+  venueordersmanager:
+    image: ${DOCKER_REGISTRY-}venueordersmanager
+    ports:
+      - "80"
+  
   usersmanager:
     image: ${DOCKER_REGISTRY-}usersmanager
+    ports:
+      - "80"
+  
+  talkordersmanager:
+    image: ${DOCKER_REGISTRY-}talkordersmanager
+    ports:
+      - "80"
+  
+  registrationsmanager:
+    image: ${DOCKER_REGISTRY-}registrationsmanager
     ports:
       - "80"
 

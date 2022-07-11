@@ -1,2 +1,7 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using ConventionsAide.Core.Authentication;
+using ConventionsAide.Core.Services;
+
+[assembly: AuthorizationAudience("Registrations")]
+
+Runner runner = new("Registrations Manager");
+runner.Start<Program>(args);

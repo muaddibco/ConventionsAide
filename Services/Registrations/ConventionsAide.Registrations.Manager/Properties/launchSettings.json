@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ConventionsAide.Registrations.Manager": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

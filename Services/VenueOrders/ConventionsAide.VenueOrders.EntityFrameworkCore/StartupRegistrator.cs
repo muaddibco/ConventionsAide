@@ -13,7 +13,7 @@ public class StartupRegistrator : StartupRegistratorBase
     {
         services.AddDbContext<VenueOrdersDbContext>(options =>
         {
-            options.UseNpgsql(configuration.GetConnectionString("Venue"), builder => builder.UseNetTopologySuite());
+            options.UseNpgsql(configuration.GetConnectionString("VenueOrders"), builder => builder.UseNetTopologySuite());
         });
 
         base.ConfigureServices(registrationManager, services, configuration, log);

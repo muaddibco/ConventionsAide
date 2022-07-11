@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ConventionsAide.TalkOrders.Manager": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

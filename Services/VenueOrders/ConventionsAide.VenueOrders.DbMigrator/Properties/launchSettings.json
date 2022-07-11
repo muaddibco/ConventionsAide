@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ConventionsAide.VenueOrders.DbMigrator": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
